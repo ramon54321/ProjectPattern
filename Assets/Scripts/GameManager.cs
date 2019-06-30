@@ -11,6 +11,8 @@ using System;
 
 public class GameState
 {
+    public int worldWidth;
+    public int worldHeight;
     public Dictionary<Vector2Int, Hex> hexByPosition = new Dictionary<Vector2Int, Hex>();
     public Dictionary<string, List<Vector2Int>> hexPositionsByNationName = new Dictionary<string, List<Vector2Int>>();
 }
@@ -38,6 +40,9 @@ public class GameManager : MonoBehaviour
                 gameState = new GameState();
             }
 
+            gameState.worldWidth = command.worldWidth;
+            gameState.worldHeight = command.worldHeight;
+
             bool setHexByPosition = Utils.ListToDictionary(command.hexByPositionKeys, command.hexByPositionValues, ref gameState.hexByPosition);
             bool setHexPositionsByNationName = Utils.ListToDictionaryList(command.hexPositionsByNationNameKeys, command.hexPositionsByNationNameValues, ref gameState.hexPositionsByNationName);
 
@@ -54,8 +59,6 @@ public class GameManager : MonoBehaviour
             {
                 onRebuildWorld?.Invoke();
             }
-
-            Debug.Log(gameState.hexByPosition[new Vector2Int(1, 1)].weather.temperature);
         };
 
         Commands.onInvalidPlayerInfo += command =>
